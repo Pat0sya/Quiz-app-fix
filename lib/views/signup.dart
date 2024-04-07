@@ -16,7 +16,7 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   late String name = '';
   late String email = '';
-  late String password = ''; // Initialize the password variable
+  late String password = '';
 
   late AuthService authService = AuthService();
   late bool _isLoading = false;
