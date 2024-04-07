@@ -17,7 +17,7 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AuthService authService = AuthService();
+  AuthService authService = new AuthService();
 
   bool isLoading = false;
 
