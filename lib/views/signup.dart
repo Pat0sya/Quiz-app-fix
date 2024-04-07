@@ -31,7 +31,10 @@ class _SignUpState extends State<SignUp> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: _isLoading
-          ? Container()
+          ? Container(
+              child: Center(
+              child: CircularProgressIndicator(),
+            ))
           : Form(
               key: _formKey,
               child: Container(
@@ -72,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: const InputDecoration(hintText: "Password"),
                       onChanged: (val) {
                         setState(() {
-                          password = val!; // Update the value of password
+                          password = val; // Update the value of password
                         });
                       },
                     ),
@@ -142,9 +145,7 @@ class _SignUpState extends State<SignUp> {
       });
 
       // Call the sign-up method from the AuthService
-      await authService
-          .signUpWithEmailAndPassword(email, password)
-          .then((value) {
+      authService.signUpWithEmailAndPassword(email, password).then((value) {
         if (value != null) {
           setState(() {
             _isLoading = false;

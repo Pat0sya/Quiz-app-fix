@@ -96,6 +96,9 @@ class _SignInState extends State<SignIn> {
                       return null;
                     },
                     decoration: InputDecoration(hintText: "Password"),
+                    onChanged: (val) {
+                      password = val;
+                    },
                   ),
                   SizedBox(
                     height: 24,
