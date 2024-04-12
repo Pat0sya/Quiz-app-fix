@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutterapp/views/create_quiz.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -12,7 +14,24 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: appBar(context)),
+      appBar: AppBar(
+        title: appBar(context),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      body: Container(
+        child: Column(
+          children: [],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CreateQuiz()));
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
