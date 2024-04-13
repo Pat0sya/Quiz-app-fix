@@ -18,6 +18,7 @@ class _HomeState extends State<Home> {
         title: appBar(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(

@@ -46,9 +46,6 @@ class _SignInState extends State<SignIn> {
               context, MaterialPageRoute(builder: (context) => Home()));
         }
       });
-
-      // Call your sign-in method here
-      // await authService.signInEmailAndPass(email, password);
     }
   }
 
@@ -59,6 +56,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         title: appBar(context),
         elevation: 0.0,
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),

@@ -52,6 +52,7 @@ class _CreateQuizState extends State<CreateQuiz> {
         title: appBar(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        centerTitle: true,
         iconTheme: IconThemeData(color: Colors.black87),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),

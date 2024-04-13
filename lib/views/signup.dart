@@ -28,6 +28,7 @@ class _SignUpState extends State<SignUp> {
         title: appBar(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: _isLoading
@@ -49,7 +50,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: const InputDecoration(hintText: "Name"),
                       onChanged: (val) {
                         setState(() {
-                          name = val!;
+                          name = val;
                         });
                       },
                     ),
@@ -60,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: const InputDecoration(hintText: "Email"),
                       onChanged: (val) {
                         setState(() {
-                          email = val!;
+                          email = val;
                         });
                       },
                     ),
