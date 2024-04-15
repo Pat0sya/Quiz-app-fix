@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutterapp/services/database.dart';
-import 'package:flutterapp/views/addquistion.dart';
+import 'package:flutterapp/views/addquestion.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 import 'package:random_string/random_string.dart';
 

@@ -24,7 +24,7 @@ class _AddQuestionState extends State<AddQuestion> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Form(
           key: _formKey,
           child: Column(
