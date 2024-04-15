@@ -78,6 +78,25 @@ class _AddQuestionState extends State<AddQuestion> {
                   option4 = val;
                 },
               ),
+              Spacer(),
+              Row(
+                children: [
+                  blueButton(
+                      context: context,
+                      label: "Submit",
+                      buttonWidth: MediaQuery.of(context).size.width / 2 - 36),
+                  SizedBox(
+                    width: 24,
+                  ),
+                  blueButton(
+                      context: context,
+                      label: "Add Question",
+                      buttonWidth: MediaQuery.of(context).size.width / 2 - 36)
+                ],
+              ),
+              SizedBox(
+                width: 60,
+              ),
             ],
           ),
         ),

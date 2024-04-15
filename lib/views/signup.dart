@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
                       onTap: () {
                         signUp(); // Call the signUp method when the button is tapped
                       },
-                      child: blueButton(context, "Sign Up"),
+                      child: blueButton(context: context, label: "Sign Up"),
                     ),
                     const SizedBox(
                       height: 18,
