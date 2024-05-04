@@ -105,10 +105,11 @@ class _CreateQuizState extends State<CreateQuiz> {
                       ),
                       Spacer(),
                       GestureDetector(
-                          onTap: () {
-                            CreateQuizOnLine();
-                          },
-                          child: blueButton(context, 'Create Quiz')),
+                        onTap: () {
+                          CreateQuizOnLine();
+                        },
+                        //child: blueButton(context: context, label: "Create Quiz")
+                      ),
                       SizedBox(
                         height: 60,
                       ),
