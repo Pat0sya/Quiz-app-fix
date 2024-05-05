@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseServie {
+class DatabaseService {
   Future<void> addQuizData(Map<String, dynamic> quizData, String quizId) async {
     await FirebaseFirestore.instance
         .collection("Quiz")
@@ -20,5 +20,9 @@ class DatabaseServie {
         .catchError((e) {
       print(e);
     });
+  }
+
+  getQuizData() async {
+    return await FirebaseFirestore.instance.collection("Quiz").snapshots();
   }
 }

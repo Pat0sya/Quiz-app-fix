@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/helper/functions.dart';
 import 'package:flutterapp/services/auth.dart';
 import 'package:flutterapp/views/home.dart';
 import 'package:flutterapp/views/signin.dart';
@@ -103,7 +104,8 @@ class _SignUpState extends State<SignUp> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const SignIn()),
+                              MaterialPageRoute(
+                                  builder: (context) => const SignIn()),
                             );
                           },
                           child: const Text(
@@ -139,6 +141,8 @@ class _SignUpState extends State<SignUp> {
           setState(() {
             _isLoading = false;
           });
+
+          HelperFunctions.saveUserLoggedInDetails(isLoggedin: true);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const Home()),

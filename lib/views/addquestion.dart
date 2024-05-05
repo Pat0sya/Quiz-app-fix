@@ -16,7 +16,7 @@ class AddQuestion extends StatefulWidget {
 class _AddQuestionState extends State<AddQuestion> {
   final _formKey = GlobalKey<FormState>();
   late String question, option1, option2, option3, option4;
-  DatabaseServie databaseServie = new DatabaseServie();
+  DatabaseService databaseServie = new DatabaseService();
 
   bool _isLoading = false;
 
@@ -52,7 +52,9 @@ class _AddQuestionState extends State<AddQuestion> {
       ),
       body: _isLoading
           ? Container(
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             )
           : Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -106,7 +108,7 @@ class _AddQuestionState extends State<AddQuestion> {
                     const SizedBox(height: 16),
                     TextFormField(
                       validator: (val) =>
-                          val!.isEmpty ? "Enter Fourth Option" : null,
+                          val!.isEmpty ? "Enter FSourth Option" : null,
                       decoration: const InputDecoration(
                         hintText: "Fourth Option",
                       ),
@@ -143,7 +145,7 @@ class _AddQuestionState extends State<AddQuestion> {
                       ],
                     ),
                     const SizedBox(
-                      width: 60,
+                      height: 60,
                     ),
                   ],
                 ),

@@ -6,40 +6,38 @@ import 'package:flutterapp/widgets/widgets.dart';
 import 'package:random_string/random_string.dart';
 
 class CreateQuiz extends StatefulWidget {
-  const CreateQuiz({super.key});
-
   @override
-  State<CreateQuiz> createState() => _CreateQuizState();
+  _CreateQuizState createState() => _CreateQuizState();
 }
 
 class _CreateQuizState extends State<CreateQuiz> {
+  DatabaseService databaseService = new DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  late String quizImageUrl, quizTitle, quizDescripstion, quizId;
-  DatabaseServie databaseServie = DatabaseServie();
-  bool _isLoading = false;
 
-  CreateQuizOnLine() async {
+  late String quizImgUrl, quizTitle, quizDesc;
+
+  bool isLoading = false;
+  late String quizId;
+
+  createQuiz() {
+    quizId = randomAlphaNumeric(16);
     if (_formKey.currentState!.validate()) {
-      quizId = randomAlphaNumeric(16);
       setState(() {
-        _isLoading = true;
+        isLoading = true;
       });
 
-      Map<String, String> quizMap = {
-        "quizId": quizId,
-        "quizImgUrl": quizImageUrl,
+      Map<String, String> quizData = {
+        "quizImgUrl": quizImgUrl,
         "quizTitle": quizTitle,
-        "quizDescription": quizDescripstion
+        "quizDesc": quizDesc
       };
 
-      await databaseServie.addQuizData(quizMap, quizId).then((value) {
+      databaseService.addQuizData(quizData, quizId).then((value) {
         setState(() {
-          _isLoading = false;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AddQuestion(quizId)),
-          );
+          isLoading = false;
         });
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => AddQuestion(quizId)));
       });
     }
   }
@@ -47,75 +45,78 @@ class _CreateQuizState extends State<CreateQuiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: BackButton(
+          color: Colors.black54,
+        ),
         title: appBar(context),
-        backgroundColor: Colors.transparent,
         elevation: 0.0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black87),
+        backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+        //brightness: Brightness.li,
       ),
-      body: _isLoading
-          ? Container(
-              child: const Center(
-                child: CircularProgressIndicator(),
+      body: Form(
+        key: _formKey,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: [
+              TextFormField(
+                validator: (val) =>
+                    val!.isEmpty ? "Enter Quiz Image Url" : null,
+                decoration:
+                    InputDecoration(hintText: "Quiz Image Url (Optional)"),
+                onChanged: (val) {
+                  quizImgUrl = val;
+                },
               ),
-            )
-          : Form(
-              key: _formKey,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        validator: (val) =>
-                            val!.isEmpty ? "Enter Image URL" : null,
-                        decoration: const InputDecoration(
-                          hintText: "Quiz Image Url",
-                        ),
-                        onChanged: (val) {
-                          quizImageUrl = val;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      TextFormField(
-                        validator: (val) =>
-                            val!.isEmpty ? "Enter Quiz Title" : null,
-                        decoration: const InputDecoration(
-                          hintText: "Quiz Title",
-                        ),
-                        onChanged: (val) {
-                          quizTitle = val;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      TextFormField(
-                        validator: (val) =>
-                            val!.isEmpty ? "Enter Quiz Description" : null,
-                        decoration: const InputDecoration(
-                          hintText: "Enter Quiz Description",
-                        ),
-                        onChanged: (val) {
-                          quizDescripstion = val;
-                        },
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          CreateQuizOnLine();
-                        },
-                        //child: blueButton(context: context, label: "Create Quiz")
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                    ],
-                  )),
-            ),
+              SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter Quiz Title" : null,
+                decoration: InputDecoration(hintText: "Quiz Title"),
+                onChanged: (val) {
+                  quizTitle = val;
+                },
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                validator: (val) =>
+                    val!.isEmpty ? "Enter Quiz Description" : null,
+                decoration: InputDecoration(hintText: "Quiz Description"),
+                onChanged: (val) {
+                  quizDesc = val;
+                },
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  createQuiz();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Text(
+                    "Create Quiz",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 60,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

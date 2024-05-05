@@ -29,7 +29,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   checkUserLoggedInStatus() async {
-    _isLoggedin = await HelperFunctions.getUserLoggedInDetails();
+    HelperFunctions.getUserLoggedInDetails().then((value) {
+      setState(() {
+        _isLoggedin = value;
+      });
+    });
   }
 
   @override

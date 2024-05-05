@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/helper/functions.dart';
 import 'package:flutterapp/services/auth.dart';
 import 'package:flutterapp/views/home.dart';
 import 'package:flutterapp/views/signup.dart';
@@ -42,6 +43,7 @@ class _SignInState extends State<SignIn> {
           setState(() {
             isLoading = false;
           });
+          HelperFunctions.saveUserLoggedInDetails(isLoggedin: true);
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => const Home()));
