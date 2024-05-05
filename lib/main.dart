@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/firebase_options.dart';
+import 'package:flutterapp/helper/functions.dart';
+import 'package:flutterapp/views/home.dart';
 import 'package:flutterapp/views/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -11,8 +13,25 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isLoggedin = false;
+  @override
+  void initState() {
+    checkUserLoggedInStatus();
+    super.initState();
+  }
+
+  checkUserLoggedInStatus() async {
+    _isLoggedin = await HelperFunctions.getUserLoggedInDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +42,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const SignIn(),
+      home: (_isLoggedin ?? false) ? Home() : SignIn(),
     );
   }
 }
