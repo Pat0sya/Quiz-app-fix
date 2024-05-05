@@ -1,5 +1,5 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "cmake.sourceDirectory": "C:/Users/coolp/code/Flutter_projects/flutterapp/linux",
+    "cmake.sourceDirectory": "D:/Code/Flutter/Quiz-app-fix/windows/flutter",
     "java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -22,16 +22,16 @@ class _HomeState extends State<Home> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
-        child: Column(
+        child: const Column(
           children: [],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreateQuiz()));
+              context, MaterialPageRoute(builder: (context) => const CreateQuiz()));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

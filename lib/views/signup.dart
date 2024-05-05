@@ -6,7 +6,7 @@ import 'package:flutterapp/views/signin.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -33,7 +33,7 @@ class _SignUpState extends State<SignUp> {
       ),
       body: _isLoading
           ? Container(
-              child: Center(
+              child: const Center(
               child: CircularProgressIndicator(),
             ))
           : Form(
@@ -103,7 +103,7 @@ class _SignUpState extends State<SignUp> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SignIn()),
+                              MaterialPageRoute(builder: (context) => const SignIn()),
                             );
                           },
                           child: const Text(
@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
           });
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => Home()),
+            MaterialPageRoute(builder: (context) => const Home()),
           );
         }
       });

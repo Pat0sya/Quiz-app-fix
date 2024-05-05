@@ -26,12 +26,10 @@ Widget blueButton(
       borderRadius: BorderRadius.circular(30),
     ),
     alignment: Alignment.center,
-    width: buttonWidth != null
-        ? buttonWidth
-        : MediaQuery.of(context).size.width - 48,
+    width: buttonWidth ?? MediaQuery.of(context).size.width - 48,
     child: Text(
       label,
-      style: TextStyle(color: Colors.white, fontSize: 16),
+      style: const TextStyle(color: Colors.white, fontSize: 16),
     ),
   );
 }

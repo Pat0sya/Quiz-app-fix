@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SignIn(),
+      home: const SignIn(),
     );
   }
 }

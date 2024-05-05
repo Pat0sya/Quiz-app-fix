@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutterapp/services/auth.dart';
 import 'package:flutterapp/views/home.dart';
 import 'package:flutterapp/views/signup.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn({super.key});
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -17,7 +18,7 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AuthService authService = new AuthService();
+  AuthService authService = AuthService();
 
   bool isLoading = false;
 
@@ -43,7 +44,7 @@ class _SignInState extends State<SignIn> {
           });
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context, MaterialPageRoute(builder: (context) => const Home()));
         }
       });
     }
@@ -61,10 +62,10 @@ class _SignInState extends State<SignIn> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            Spacer(),
+            const Spacer(),
             Form(
               key: _formKey,
               child: Column(
@@ -78,9 +79,9 @@ class _SignInState extends State<SignIn> {
                       // Add more validation logic as needed
                       return null;
                     },
-                    decoration: InputDecoration(hintText: "Email"),
+                    decoration: const InputDecoration(hintText: "Email"),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   TextFormField(
@@ -93,25 +94,25 @@ class _SignInState extends State<SignIn> {
                       // Add more validation logic as needed
                       return null;
                     },
-                    decoration: InputDecoration(hintText: "Password"),
+                    decoration: const InputDecoration(hintText: "Password"),
                     onChanged: (val) {
                       password = val;
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   GestureDetector(
                     onTap: signIn,
                     child: blueButton(context: context, label: "Sign In"),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Don\'t have an account? ',
+                      const Text('Don\'t have an account? ',
                           style:
                               TextStyle(color: Colors.black87, fontSize: 17)),
                       GestureDetector(
@@ -119,10 +120,10 @@ class _SignInState extends State<SignIn> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUp()));
+                                  builder: (context) => const SignUp()));
                         },
                         child: Container(
-                          child: Text('Sign Up',
+                          child: const Text('Sign Up',
                               style: TextStyle(
                                   color: Colors.black87,
                                   decoration: TextDecoration.underline,
@@ -134,7 +135,7 @@ class _SignInState extends State<SignIn> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             )
           ],
