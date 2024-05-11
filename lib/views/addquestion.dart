@@ -7,7 +7,7 @@ import 'package:flutterapp/widgets/widgets.dart';
 class AddQuestion extends StatefulWidget {
   final String quizId;
 
-  AddQuestion(this.quizId);
+  const AddQuestion(this.quizId, {super.key});
 
   @override
   State<AddQuestion> createState() => _AddQuestionState();
@@ -32,6 +32,8 @@ class _AddQuestionState extends State<AddQuestion> {
         "option3": option3,
         "option4": option4
       };
+
+      print("${widget.quizId}");
       databaseServie.addQuestionData(questionMap, widget.quizId).then((value) {
         setState(() {
           _isLoading = false;
@@ -51,10 +53,8 @@ class _AddQuestionState extends State<AddQuestion> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: _isLoading
-          ? Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+          ? const Center(
+              child: CircularProgressIndicator(),
             )
           : Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),

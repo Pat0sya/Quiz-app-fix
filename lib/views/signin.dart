@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
           HelperFunctions.saveUserLoggedInDetails(isLoggedin: true);
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const Home()));
+              context, MaterialPageRoute(builder: (context) => Home()));
         }
       });
     }

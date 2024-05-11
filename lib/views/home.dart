@@ -1,57 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutterapp/services/database.dart';
 import 'package:flutterapp/views/create_quiz.dart';
+import 'package:flutterapp/views/play_quiz.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
-
   @override
   State<Home> createState() => _HomeState();
 }
 
+late Stream? quizStream;
+
 class _HomeState extends State<Home> {
   late Stream quizStream;
-  DatabaseService databaseSevice = new DatabaseService();
+  DatabaseService databaseService = new DatabaseService();
 
   Widget quizList() {
     return Container(
-      child: StreamBuilder(
-        stream: quizStream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // or any loading indicator
-          }
-          if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
-            return Text("No data available");
-          }
-          return ListView.builder(
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context, index) {
-              final quizData =
-                  snapshot.data.docs[index].data() as Map<String, dynamic>;
-              final imgUrl = quizData["quizImgUrl"];
-              final desc = quizData["quizDesc"];
-              final title = quizData["quizTitle"];
-              return QuizTile(
-                imgUrl: imgUrl ?? "",
-                desc: desc ?? "",
-                title: title ?? "",
+      child: Column(
+        children: [
+          StreamBuilder(
+            stream: quizStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              if (!snapshot.hasData || snapshot.data == null) {
+                return Text('No data available'); // Handle no data case
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return QuizTile(
+                    imgUrl:
+                        snapshot.data!.docs[index].data()?["quizImgUrl"] ?? "",
+                    title:
+                        snapshot.data!.docs[index].data()?['quizTitle'] ?? "",
+                    desc: snapshot.data!.docs[index].data()?['quizDesc'] ?? "",
+                    quizid: snapshot.data!.docs[index].data()?["quizId"] ?? "",
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
   @override
   void initState() {
-    databaseSevice.getQuizData().then((val) {
-      setState(() {
-        quizStream = val;
-      });
+    databaseService.getQuizData().then((value) {
+      quizStream = value;
+      setState(() {});
     });
     super.initState();
   }
@@ -82,19 +87,62 @@ class QuizTile extends StatelessWidget {
   final String imgUrl;
   final String title;
   final String desc;
-  QuizTile({required this.imgUrl, required this.title, required this.desc});
+  final String quizid;
+  QuizTile(
+      {required this.imgUrl,
+      required this.title,
+      required this.desc,
+      required this.quizid});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Image.network(imgUrl),
-          Container(
-            child: Column(
-              children: [Text(title), Text(desc)],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => PlayQuiz(quizid)));
+      },
+      child: Container(
+        height: 150,
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imgUrl,
+                width: MediaQuery.of(context).size.width - 48,
+                fit: BoxFit.cover,
+              ),
             ),
-          )
-        ],
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.black26),
+              margin: EdgeInsets.only(bottom: 8),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    desc,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
