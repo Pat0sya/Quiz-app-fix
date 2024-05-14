@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    databaseService.getQuizData().then((value) {
+    databaseService.getQuizezData().then((value) {
       quizStream = value;
       setState(() {});
     });
@@ -108,7 +108,7 @@ class QuizTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 imgUrl,
-                width: MediaQuery.of(context).size.width - 48,
+                width: MediaQuery.of(context).size.width - 4,
                 fit: BoxFit.cover,
               ),
             ),
@@ -116,7 +116,7 @@ class QuizTile extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.black26),
-              margin: EdgeInsets.only(bottom: 8),
+              margin: EdgeInsets.only(bottom: 2),
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
