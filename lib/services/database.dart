@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<void> addQuizData(Map<String, dynamic> quizData, String quizId) async {
     if (quizId.isNotEmpty) {
       await FirebaseFirestore.instance
@@ -31,7 +32,7 @@ class DatabaseService {
   }
 
   getQuizezData() async {
-    return await FirebaseFirestore.instance.collection("Quiz").snapshots();
+    return FirebaseFirestore.instance.collection("Quiz").snapshots();
   }
 
   getQuizData(String quizId) async {
@@ -44,6 +45,14 @@ class DatabaseService {
     } else {
       print("Quiz ID is empty");
       return null;
+    }
+  }
+
+  Future<void> deleteQuiz(String quizId) async {
+    try {
+      await _firestore.collection('Quiz').doc(quizId).delete();
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: false,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: (_isLoggedin ?? false) ? Home() : SignIn(),
+      home: (_isLoggedin) ? const Home() : const SignIn(),
     );
   }
 }

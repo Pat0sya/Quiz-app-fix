@@ -22,14 +22,14 @@ Widget blueButton(
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 18),
     decoration: BoxDecoration(
-      color: Colors.blue,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(30),
     ),
     alignment: Alignment.center,
     width: buttonWidth ?? MediaQuery.of(context).size.width - 48,
     child: Text(
       label,
-      style: const TextStyle(color: Colors.white, fontSize: 16),
+      style: const TextStyle(color: Colors.blue, fontSize: 16),
     ),
   );
 }

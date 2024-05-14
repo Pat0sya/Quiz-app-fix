@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/models/question_model.dart';
 import 'package:flutterapp/services/database.dart';
-import 'package:flutterapp/widgets/quiz_play_widget.dart';
+import 'package:flutterapp/views/results.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class PlayQuiz extends StatefulWidget {
   final String quizId;
-  PlayQuiz(this.quizId);
+  const PlayQuiz(this.quizId, {super.key});
 
   @override
   State<PlayQuiz> createState() => _PlayQuizState();
@@ -21,7 +20,7 @@ int _incorrect = 0;
 int _notAttempted = 0;
 
 class _PlayQuizState extends State<PlayQuiz> {
-  late DatabaseService databaseService = new DatabaseService();
+  late DatabaseService databaseService = DatabaseService();
   QuerySnapshot? questionSnapshot;
 
   QuestionModel getQuestionModelFromDataSnapshot(
@@ -47,7 +46,6 @@ class _PlayQuizState extends State<PlayQuiz> {
   }
 
   @override
-  @override
   void initState() {
     super.initState();
     databaseService = DatabaseService();
@@ -72,7 +70,7 @@ class _PlayQuizState extends State<PlayQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
+        leading: const BackButton(
           color: Colors.black54,
         ),
         title: appBar(context),
@@ -81,14 +79,27 @@ class _PlayQuizState extends State<PlayQuiz> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             questionSnapshot == null
-                ? Container(child: Center(child: CircularProgressIndicator()))
+                ? const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                 : Expanded(
                     child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       itemCount: questionSnapshot?.docs.length ?? 0,
                       itemBuilder: (context, index) {
                         return QuizPlayTile(
@@ -102,6 +113,21 @@ class _PlayQuizState extends State<PlayQuiz> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.check),
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Results(
+                correct: _correct,
+                incorrect: _incorrect,
+                total: total,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -109,7 +135,7 @@ class _PlayQuizState extends State<PlayQuiz> {
 class QuizPlayTile extends StatefulWidget {
   final QuestionModel questionModel;
   final int index;
-  QuizPlayTile({required this.questionModel, required this.index});
+  const QuizPlayTile({super.key, required this.questionModel, required this.index});
 
   @override
   State<QuizPlayTile> createState() => _QuizPlayTileState();
@@ -121,38 +147,141 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Text(widget.questionModel.question ?? ""),
-          SizedBox(height: 4),
-          OptionTile(
-            correctAnswer: widget.questionModel.correctOption,
-            description: widget.questionModel.option1,
-            option: "A",
-            optionSelected: optionSelected,
-          ),
-          SizedBox(height: 4),
-          OptionTile(
-            correctAnswer: widget.questionModel.correctOption,
-            description: widget.questionModel.option2,
-            option: "B",
-            optionSelected: optionSelected,
-          ),
-          SizedBox(height: 4),
-          OptionTile(
-            correctAnswer: widget.questionModel.correctOption,
-            description: widget.questionModel.option3,
-            option: "C",
-            optionSelected: optionSelected,
-          ),
-          SizedBox(height: 4),
-          OptionTile(
-            correctAnswer: widget.questionModel.correctOption,
-            description: widget.questionModel.option4,
-            option: "D",
-            optionSelected: optionSelected,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            spreadRadius: 2,
+            offset: Offset(0, 2),
           ),
         ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Q${widget.index + 1}: ${widget.questionModel.question ?? ""}",
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          for (int i = 0; i < 4; i++)
+            GestureDetector(
+              onTap: () {
+                if (!widget.questionModel.answered) {
+                  bool isCorrect = false;
+                  switch (i) {
+                    case 0:
+                      isCorrect = widget.questionModel.option1 ==
+                          widget.questionModel.correctOption;
+                      optionSelected = widget.questionModel.option1;
+                      break;
+                    case 1:
+                      isCorrect = widget.questionModel.option2 ==
+                          widget.questionModel.correctOption;
+                      optionSelected = widget.questionModel.option2;
+                      break;
+                    case 2:
+                      isCorrect = widget.questionModel.option3 ==
+                          widget.questionModel.correctOption;
+                      optionSelected = widget.questionModel.option3;
+                      break;
+                    case 3:
+                      isCorrect = widget.questionModel.option4 ==
+                          widget.questionModel.correctOption;
+                      optionSelected = widget.questionModel.option4;
+                      break;
+                  }
+
+                  setState(() {
+                    widget.questionModel.answered = true;
+                    if (isCorrect) {
+                      _correct++;
+                    } else {
+                      _incorrect++;
+                    }
+                    _notAttempted--;
+                  });
+                }
+              },
+              child: OptionTile(
+                correctAnswer: widget.questionModel.correctOption,
+                description: [
+                  widget.questionModel.option1,
+                  widget.questionModel.option2,
+                  widget.questionModel.option3,
+                  widget.questionModel.option4
+                ][i],
+                option: String.fromCharCode(65 + i),
+                optionSelected: optionSelected,
+              ),
+            ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class OptionTile extends StatelessWidget {
+  final String correctAnswer;
+  final String description;
+  final String option;
+  final String optionSelected;
+
+  const OptionTile(
+      {super.key, required this.correctAnswer,
+      required this.description,
+      required this.option,
+      required this.optionSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isSelected = optionSelected == description;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isSelected ? Colors.blueAccent : Colors.grey.shade300,
+          width: 1.5,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        color: isSelected ? Colors.blueAccent.withOpacity(0.2) : Colors.white,
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.blueAccent.withOpacity(0.2),
+                  blurRadius: 6,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 2),
+                )
+              ]
+            : [],
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor:
+              isSelected ? Colors.blueAccent : Colors.grey.shade300,
+          child: Text(
+            option,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.grey.shade700,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        title: Text(
+          description,
+          style: TextStyle(
+            color: isSelected ? Colors.blueAccent : Colors.black87,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

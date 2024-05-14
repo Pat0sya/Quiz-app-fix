@@ -33,10 +33,9 @@ class _SignUpState extends State<SignUp> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: _isLoading
-          ? Container(
-              child: const Center(
+          ? const Center(
               child: CircularProgressIndicator(),
-            ))
+            )
           : Form(
               key: _formKey,
               child: Container(
@@ -48,18 +47,31 @@ class _SignUpState extends State<SignUp> {
                       validator: (val) {
                         return val!.isEmpty ? "Enter correct name" : null;
                       },
-                      decoration: const InputDecoration(hintText: "Name"),
+                      decoration: InputDecoration(
+                        hintText: "Name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                       onChanged: (val) {
                         setState(() {
                           name = val;
                         });
                       },
                     ),
+                    const SizedBox(
+                      height: 12,
+                    ),
                     TextFormField(
                       validator: (val) {
                         return val!.isEmpty ? "Enter correct email" : null;
                       },
-                      decoration: const InputDecoration(hintText: "Email"),
+                      decoration: InputDecoration(
+                        hintText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                       onChanged: (val) {
                         setState(() {
                           email = val;
@@ -67,31 +79,27 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                     const SizedBox(
-                      height: 6,
+                      height: 12,
                     ),
                     TextFormField(
                       obscureText: true,
                       validator: (val) {
                         return val!.isEmpty ? "Enter correct password" : null;
                       },
-                      decoration: const InputDecoration(hintText: "Password"),
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                       onChanged: (val) {
                         setState(() {
-                          password = val; // Update the value of password
+                          password = val;
                         });
                       },
                     ),
                     const SizedBox(
                       height: 24,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        signUp(); // Call the signUp method when the button is tapped
-                      },
-                      child: blueButton(context: context, label: "Sign Up"),
-                    ),
-                    const SizedBox(
-                      height: 18,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +113,8 @@ class _SignUpState extends State<SignUp> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignIn()),
+                                builder: (context) => const SignIn(),
+                              ),
                             );
                           },
                           child: const Text(
@@ -119,6 +128,35 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                     const SizedBox(
+                      height: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        signUp();
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xff007EF4),
+                              Color(0xff2A75BC),
+                            ],
+                          ),
+                        ),
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
                       height: 80,
                     ),
                   ],
@@ -128,14 +166,12 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Method to handle sign-up logic
   void signUp() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      // Call the sign-up method from the AuthService
       authService.signUpWithEmailAndPassword(email, password).then((value) {
         if (value != null) {
           setState(() {
@@ -145,7 +181,7 @@ class _SignUpState extends State<SignUp> {
           HelperFunctions.saveUserLoggedInDetails(isLoggedin: true);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => Home()),
+            MaterialPageRoute(builder: (context) => const Home()),
           );
         }
       });

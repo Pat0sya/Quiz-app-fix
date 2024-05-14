@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
           HelperFunctions.saveUserLoggedInDetails(isLoggedin: true);
 
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context, MaterialPageRoute(builder: (context) => const Home()));
         }
       });
     }
@@ -55,7 +55,6 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: appBar(context),
         elevation: 0.0,
@@ -64,6 +63,14 @@ class _SignInState extends State<SignIn> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.blueAccent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
@@ -74,29 +81,49 @@ class _SignInState extends State<SignIn> {
                 children: [
                   TextFormField(
                     controller: _emailController,
+                    style: const TextStyle(
+                        color: Colors.white), // Set text color to white
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
                       }
-                      // Add more validation logic as needed
                       return null;
                     },
-                    decoration: const InputDecoration(hintText: "Email"),
+                    decoration: InputDecoration(
+                      hintText: "Email",
+                      hintStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 6,
                   ),
                   TextFormField(
                     controller: _passwordController,
+                    style: const TextStyle(
+                        color: Colors.white), // Set text color to white
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
                       }
-                      // Add more validation logic as needed
                       return null;
                     },
-                    decoration: const InputDecoration(hintText: "Password"),
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      hintStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                     onChanged: (val) {
                       password = val;
                     },
@@ -104,19 +131,11 @@ class _SignInState extends State<SignIn> {
                   const SizedBox(
                     height: 24,
                   ),
-                  GestureDetector(
-                    onTap: signIn,
-                    child: blueButton(context: context, label: "Sign In"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Don\'t have an account? ',
-                          style:
-                              TextStyle(color: Colors.black87, fontSize: 17)),
+                          style: TextStyle(color: Colors.white, fontSize: 17)),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -127,19 +146,26 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                           child: const Text('Sign Up',
                               style: TextStyle(
-                                  color: Colors.black87,
+                                  color: Colors.white,
                                   decoration: TextDecoration.underline,
                                   fontSize: 17)),
                         ),
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: signIn,
+                    child: blueButton(context: context, label: "Sign In"),
+                  ),
                 ],
               ),
             ),
             const SizedBox(
-              height: 80,
-            )
+              height: 90,
+            ),
           ],
         ),
       ),
