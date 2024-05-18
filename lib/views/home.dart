@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterapp/services/auth.dart';
 import 'package:flutterapp/services/database.dart';
 import 'package:flutterapp/views/create_quiz.dart';
@@ -143,7 +144,8 @@ class QuizTile extends StatelessWidget {
   final VoidCallback refreshCallback;
   final DatabaseService databaseService = DatabaseService();
 
-  QuizTile({super.key, 
+  QuizTile({
+    super.key,
     required this.imgUrl,
     required this.title,
     required this.desc,
@@ -159,31 +161,39 @@ class QuizTile extends StatelessWidget {
     refreshCallback();
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Delete Quiz'),
-          content: const Text('Are you sure you want to delete this quiz?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _deleteQuiz(context);
-              },
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
-      },
-    );
+  void _showDeleteConfirmationDialog(BuildContext context) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.email == 'admin@gmail.com') {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Delete Quiz'),
+            content: const Text('Are you sure you want to delete this quiz?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _deleteQuiz(context);
+                },
+                child:
+                    const Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You do not have permission to delete this quiz'),
+      ));
+    }
   }
 
   @override

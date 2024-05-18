@@ -41,6 +41,9 @@ dependencies:
   random_string: ^2.3.1
   shared_preferences: ^2.2.3
   http: ^0.13.6
+  qr_flutter: ^4.1.0
+  animated_emoji: ^3.1.0
+  percent_indicator: ^4.2.3
 
 
 dev_dependencies:

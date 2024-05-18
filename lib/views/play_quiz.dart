@@ -135,7 +135,8 @@ class _PlayQuizState extends State<PlayQuiz> {
 class QuizPlayTile extends StatefulWidget {
   final QuestionModel questionModel;
   final int index;
-  const QuizPlayTile({super.key, required this.questionModel, required this.index});
+  const QuizPlayTile(
+      {super.key, required this.questionModel, required this.index});
 
   @override
   State<QuizPlayTile> createState() => _QuizPlayTileState();
@@ -234,7 +235,8 @@ class OptionTile extends StatelessWidget {
   final String optionSelected;
 
   const OptionTile(
-      {super.key, required this.correctAnswer,
+      {super.key,
+      required this.correctAnswer,
       required this.description,
       required this.option,
       required this.optionSelected});

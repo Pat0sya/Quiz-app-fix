@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class OptionTile extends StatefulWidget {
   final String option, description, correctAnswer, optionSelected;
   const OptionTile(
-      {super.key, required this.option,
+      {super.key,
+      required this.option,
       required this.description,
       required this.correctAnswer,
       required this.optionSelected});
