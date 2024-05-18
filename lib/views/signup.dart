@@ -7,7 +7,7 @@ import 'package:flutterapp/views/signin.dart';
 import 'package:flutterapp/widgets/widgets.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -21,6 +21,18 @@ class _SignUpState extends State<SignUp> {
 
   late AuthService authService = AuthService();
   late bool _isLoading = false;
+  double _opacity = 0.0; // Initial opacity value
+
+  @override
+  void initState() {
+    super.initState();
+    // Trigger the animation after a short delay
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _opacity = 1.0;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,130 +48,134 @@ class _SignUpState extends State<SignUp> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Form(
-              key: _formKey,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    const Spacer(),
-                    TextFormField(
-                      validator: (val) {
-                        return val!.isEmpty ? "Enter correct name" : null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+          : AnimatedOpacity(
+              duration: const Duration(milliseconds: 500),
+              opacity: _opacity,
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      const Spacer(),
+                      TextFormField(
+                        validator: (val) {
+                          return val!.isEmpty ? "Enter correct name" : null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            name = val;
+                          });
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          name = val;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    TextFormField(
-                      validator: (val) {
-                        return val!.isEmpty ? "Enter correct email" : null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Email",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      const SizedBox(
+                        height: 12,
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          email = val;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      validator: (val) {
-                        return val!.isEmpty ? "Enter correct password" : null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                      TextFormField(
+                        validator: (val) {
+                          return val!.isEmpty ? "Enter correct email" : null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Already have an account? ",
-                          style: TextStyle(fontSize: 15.5),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        validator: (val) {
+                          return val!.isEmpty ? "Enter correct password" : null;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignIn(),
+                        onChanged: (val) {
+                          setState(() {
+                            password = val;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account? ",
+                            style: TextStyle(fontSize: 15.5),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignIn(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              "Sign In",
+                              style: TextStyle(
+                                fontSize: 15.5,
+                                decoration: TextDecoration.underline,
                               ),
-                            );
-                          },
-                          child: const Text(
-                            "Sign In",
-                            style: TextStyle(
-                              fontSize: 15.5,
-                              decoration: TextDecoration.underline,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          signUp();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xff007EF4),
+                                Color(0xff2A75BC),
+                              ],
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        signUp();
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xff007EF4),
-                              Color(0xff2A75BC),
-                            ],
-                          ),
-                        ),
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                          child: const Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 80,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
