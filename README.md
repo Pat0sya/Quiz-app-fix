@@ -1,6 +1,6 @@
 # flutterapp
 
-Lets begin, its a rebuild AND FIXED quiz app from https://github.com/theindianappguy for current and new versions of firebase, flutter and dart.
+Lets begin, its a rebuild AND FIXED quiz app for current and new versions of firebase, flutter and dart. Also it's my pet project of the 2024!
 I will add more information further!
 
 ## Getting Started
